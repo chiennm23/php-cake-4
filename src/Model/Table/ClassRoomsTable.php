@@ -65,14 +65,10 @@ class ClassRoomsTable extends Table
             ->allowEmptyString('id', null, 'create');
 
         $validator
-//            ->scalar('name')
-//            ->maxLength('name', 255)
-//            ->requirePresence('name', 'create')
-//            ->notEmptyString('name')
-        ->add('name', 'charter', [
-            'rule' => 'email',
-            'message' => 'Email ....'
-        ]);
+            ->scalar('name')
+            ->maxLength('name', 255)
+            ->requirePresence('name', 'create')
+            ->notEmptyString('name');
 
         $validator
             ->scalar('description')

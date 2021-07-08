@@ -88,4 +88,6 @@ $routes->scope('/', function (RouteBuilder $builder) {
  * });
  * ```
  */
+$routes->connect('/logout', ['controller' => 'Users', 'action' => 'logout']);
 $routes->connect('/students/test', ['controller' => 'Students', 'action' => 'indexTest']);
+$routes->connect('/contacts/test', ['controller' => 'Contacts', 'action' => 'indexTest']);
