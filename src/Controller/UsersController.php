@@ -27,7 +27,7 @@ class UsersController extends AppController
      * View method
      *
      * @param string|null $id User id.
-     * @return \Cake\Http\Response|null|void Renders view
+     * @return \Cake\Http\Response|null|void Renders viewUndefined property: UsersController::$Session
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
     public function view($id = null)
@@ -115,7 +115,6 @@ class UsersController extends AppController
     {
         $this->request->allowMethod(['get', 'post']);
         $result = $this->Authentication->getResult();
-
         // regardless of POST or GET, redirect if user is logged in
         if ($result->isValid()) {
             // redirect to /articles after login success
@@ -123,7 +122,8 @@ class UsersController extends AppController
                 'controller' => 'Students',
                 'action' => 'index',
             ]);
-
+            $this->Session->write('UserName', $result->getData()->name);
+            var_dump($this->Session->read('UserName'));die();
             return $this->redirect($redirect);
         }
         // display error if user submitted and authentication failed
