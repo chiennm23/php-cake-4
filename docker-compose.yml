@@ -1,0 +1,55 @@
+version: "3"
+
+networks:
+  app_network:
+    driver: bridge
+
+services:
+
+  db:
+    image: mysql:5.7
+    container_name: app_mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: admin123
+      MYSQL_DATABASE: app-lab
+      MYSQL_USER: admin
+      MYSQL_PASSWORD: admin123
+      TZ: "Asia/Tokyo"
+    ports:
+      - 3307:3306
+    networks:
+      - app_network
+    restart: always
+    volumes:
+    - ./docker/data:/var/lib/mysql
+    - ./docker/mysql:/docker-entrypoint-initdb.d
+
+  web:
+    build:
+      context: ./docker/php
+    container_name: app_web
+    volumes:
+      - ./:/var/www
+      - ./docker/php/php.ini:/usr/local/etc/php/php.ini
+    working_dir: /var/www
+    networks:
+      - app_network
+    links:
+      - db
+    restart: always
+
+  apache:
+    image: httpd:2.4.33-alpine
+    container_name: app_apache
+    ports:
+      - 8313:80
+    working_dir: /var/www
+    volumes:
+      - ./:/var/www
+      - ./docker/apache/app.conf:/usr/local/apache2/conf/app.conf
+      - ./docker/apache/httpd.conf:/usr/local/apache2/conf/httpd.conf
+    restart: always
+    networks:
+      - app_network
+    links:
+      - web
