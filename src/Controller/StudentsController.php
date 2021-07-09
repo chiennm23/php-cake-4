@@ -21,7 +21,14 @@ class StudentsController extends AppController
         $this->paginate = [
             'contain' => ['ClassRooms'],
         ];
+//        $students = $this->paginate($this->Students,['limit' => 3, 'offset' => 0]);
         $students = $this->paginate($this->Students);
+//        echo '<pre>';
+//        print_r($this->viewBuilder()->setOptions(['students' => $students], true)->getOptions()['students']->toArray());
+//        echo '</pre>';
+//        die();
+//        var_dump($this->viewBuilder()->setOptions(['students' => $students], true));die();
+        $this->viewBuilder()->setOptions(['students' => $students], true);
         $this->set(compact('students'));
     }
 
