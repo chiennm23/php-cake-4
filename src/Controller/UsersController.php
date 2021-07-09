@@ -122,8 +122,8 @@ class UsersController extends AppController
                 'controller' => 'Students',
                 'action' => 'index',
             ]);
-            $this->Session->write('UserName', $result->getData()->name);
-            var_dump($this->Session->read('UserName'));die();
+            $session = $this->request->getSession();
+            $session->write('UserName', $result->getData()->name);
             return $this->redirect($redirect);
         }
         // display error if user submitted and authentication failed
@@ -138,6 +138,8 @@ class UsersController extends AppController
         $result = $this->Authentication->getResult();
         // regardless of POST or GET, redirect if user is logged in
         if ($result->isValid()) {
+            $session = $this->request->getSession();
+            $session->destroy();
             $this->Authentication->logout();
             return $this->redirect(['controller' => 'Users', 'action' => 'login']);
         }
